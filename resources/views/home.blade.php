@@ -16,7 +16,6 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Stream Information</div>
-                {{ dd($damageChanges) }}
                 <div class="card-body">
                     <h3>Browser Sources:</h3>
                     <b>Default:</b> <a href="{{ route('default_source', ['apiKey' => Auth::user()->api_key]) }}">{{ route('default_source', ['apiKey' => Auth::user()->api_key]) }}</a><br>
