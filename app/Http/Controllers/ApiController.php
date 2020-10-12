@@ -28,7 +28,7 @@ class ApiController extends Controller
         }
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => $user->shown]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function subtractSkillRank(string $apiKey, int $adjustAmount) {
@@ -52,7 +52,7 @@ class ApiController extends Controller
         }
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => $user->shown]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function addTankSkillRank(string $apiKey, int $adjustAmount) {
@@ -62,7 +62,7 @@ class ApiController extends Controller
         $newValue = $user->tank_sr += $adjustAmount;
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 1]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function subtractTankSkillRank(string $apiKey, int $adjustAmount) {
@@ -72,7 +72,7 @@ class ApiController extends Controller
         $newValue = $user->tank_sr -= $adjustAmount;
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 1]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function addDamageSkillRank(string $apiKey, int $adjustAmount) {
@@ -82,7 +82,7 @@ class ApiController extends Controller
         $newValue = $user->damage_sr += $adjustAmount;
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 2]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function subtractDamageSkillRank(string $apiKey, int $adjustAmount) {
@@ -92,7 +92,7 @@ class ApiController extends Controller
         $newValue = $user->damage_sr -= $adjustAmount;
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 2]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function addSupportSkillRank(string $apiKey, int $adjustAmount) {
@@ -102,7 +102,7 @@ class ApiController extends Controller
         $newValue = $user->support_sr += $adjustAmount;
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 3]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function subtractSupportSkillRank(string $apiKey, int $adjustAmount) {
@@ -112,7 +112,7 @@ class ApiController extends Controller
         $newValue = $user->support_sr -= $adjustAmount;
         $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 3]);
         $user->save();
-        return $newValue;
+        return "Added " . $newValue . " SR!";
     }
 
     public function changeShown(string $apiKey, int $role) {
@@ -120,7 +120,7 @@ class ApiController extends Controller
         if (!is_int($role)) die();
         $user->shown = $role;
         $user->save();
-        return $user;
+        return "Changed shown role";
     }
 
     public function getShownSkillRank(string $apiKey) {
