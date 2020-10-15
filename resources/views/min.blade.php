@@ -28,5 +28,5 @@ function updateSr() {
         }
     });
 </script>
-<div><img src="" alt="" class="rank-img-left" style="display: inline; width: auto; height: 1em;"><div id="rank" class="rank" style="display: inline;"></div><img src="" alt="" class="rank-img-right" style="display: inline; width: auto; height: 1em;"></div>
+<div style="font-size: 45px;"><img src="" alt="" class="rank-img rank-img-left" style="display: inline; width: auto; height: 1em;"><div id="rank" class="rank" style="display: inline;"></div><img src="" alt="" class="rank-img rank-img-right" style="display: inline; width: auto; height: 1em;"></div>
 @endsection
