@@ -14,13 +14,6 @@
 
     <!-- JQuery created by the jQuery foundation. Available from https://jquery.com/ -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-
-    <!-- DataTables designed and created by SpryMedia Ltd. Available from https://datatables.net/ -->
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
-
-    <!-- IonIcons developed by the Ionic Framework Team. Available from https://ionicons.com/ -->
-    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 </head>
 @yield('header')
 @yield('scripts')
