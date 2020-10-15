@@ -10,109 +10,57 @@ class ApiController extends Controller
     public function addSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = 0;
-        $newValue = 0;
-        switch ($user->shown) {
-            case 1:
-                $oldValue = $user->tank_sr;
-                $newValue = $user->tank_sr += $adjustAmount;
-                break;
-            case 2:
-                $oldValue = $user->damage_sr;
-                $newValue = $user->damage_sr += $adjustAmount;
-                break;
-            case 3:
-                $oldValue = $user->support_sr;
-                $newValue = $user->support_sr += $adjustAmount;
-                break;
-        }
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => $user->shown]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 0, $adjustAmount);
+        return "Added " . $adjustAmount . " SR!";
     }
 
     public function subtractSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = 0;
-        $newValue = 0;
-        switch ($user->shown) {
-            case 1:
-                $oldValue = $user->tank_sr;
-                $newValue = $user->tank_sr -= $adjustAmount;
-                break;
-            case 2:
-                $oldValue = $user->damage_sr;
-                $newValue = $user->damage_sr -= $adjustAmount;
-                break;
-            case 3:
-                $oldValue = $user->support_sr;
-                $newValue = $user->support_sr -= $adjustAmount;
-                break;
-        }
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => $user->shown]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 0, $adjustAmount * -1);
+        return "Subtracted " . $adjustAmount . " SR!";
     }
 
     public function addTankSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = $user->tank_sr;
-        $newValue = $user->tank_sr += $adjustAmount;
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 1]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 1, $adjustAmount);
+        return "Added " . $adjustAmount . " SR!";
     }
 
     public function subtractTankSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = $user->tank_sr;
-        $newValue = $user->tank_sr -= $adjustAmount;
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 1]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 1, $adjustAmount * -1);
+        return "Added " . $adjustAmount . " SR!";
     }
 
     public function addDamageSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = $user->damage_sr;
-        $newValue = $user->damage_sr += $adjustAmount;
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 2]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 2, $adjustAmount);
+        return "Added " . $adjustAmount . " SR!";
     }
 
     public function subtractDamageSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = $user->damage_sr;
-        $newValue = $user->damage_sr -= $adjustAmount;
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 2]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 2, $adjustAmount * -1);
+        return "Subtracted " . $adjustAmount . " SR!";
     }
 
     public function addSupportSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = $user->support_sr;
-        $newValue = $user->support_sr += $adjustAmount;
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 3]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 3, $adjustAmount);
+        return "Added " . $adjustAmount . " SR!";
     }
 
     public function subtractSupportSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
-        $oldValue = $user->support_sr;
-        $newValue = $user->support_sr -= $adjustAmount;
-        $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 3]);
-        $user->save();
-        return "Added " . $newValue . " SR!";
+        $this->adjustSkillRating($user, 3, $adjustAmount * -1);
+        return "Subtracted " . $adjustAmount . " SR!";
     }
 
     public function changeShown(string $apiKey, int $role) {
@@ -150,6 +98,7 @@ class ApiController extends Controller
         }
         die();
     }
+
     public function getTankSkillRank(string $apiKey) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         return $user->tank_sr;
@@ -163,5 +112,28 @@ class ApiController extends Controller
     public function getSupportSkillRank(string $apiKey) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         return $user->support_sr;
+    }
+
+    private function adjustSkillRating(User $user, int $role, int $adjustAmount) {
+        if ($role == 0) { $role = $user->shown_sr; }
+        $oldValue = 0;
+        $newValue = 0;
+        switch ($role) {
+            case 1:
+                $oldValue = $user->tank_sr;
+                $newValue = $user->tank_sr -= $adjustAmount;
+                break;
+            case 2:
+                $oldValue = $user->damage_sr;
+                $newValue = $user->damage_sr -= $adjustAmount;
+                break;
+            case 3:
+                $oldValue = $user->support_sr;
+                $newValue = $user->support_sr -= $adjustAmount;
+                break;
+        }
+        $change = $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 3]);
+        $user->save();
+        return $change;
     }
 }
