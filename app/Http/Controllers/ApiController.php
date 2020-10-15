@@ -100,18 +100,15 @@ class ApiController extends Controller
     }
 
     public function getTankSkillRank(string $apiKey) {
-        $user = User::where('api_key', '=', $apiKey)->firstOrFail();
-        return $user->tank_sr;
+        return User::where('api_key', '=', $apiKey)->firstOrFail()->tank_sr;
     }
 
     public function getDamageSkillRank(string $apiKey) {
-        $user = User::where('api_key', '=', $apiKey)->firstOrFail();
-        return $user->damage_sr;
+        return User::where('api_key', '=', $apiKey)->firstOrFail()->damage_sr;
     }
 
     public function getSupportSkillRank(string $apiKey) {
-        $user = User::where('api_key', '=', $apiKey)->firstOrFail();
-        return $user->support_sr;
+        return User::where('api_key', '=', $apiKey)->firstOrFail()->support_sr;
     }
 
     private function adjustSkillRating(User $user, int $role, int $adjustAmount) {
