@@ -7,6 +7,21 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+
+    /*
+     * Role Numbers:
+     * 0:- Shown
+     * 1:- Tank
+     * 2:- Damage
+     * 3:- Support
+     */
+
+    public function setSkillRank(string $apiKey, int $newSkillRank) {
+        $oldSkillRank = $this->getSkillRank($apiKey, 0);
+        $this->adjustSkillRating(User::where('api_key', '=', $apiKey)->firstOrFail(), 0, $newSkillRank - $oldSkillRank);
+        return "Set Skill Rank to " . $newSkillRank;
+    }
+
     public function addSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
@@ -19,6 +34,12 @@ class ApiController extends Controller
         if (!is_int($adjustAmount)) die();
         $this->adjustSkillRating($user, 0, $adjustAmount * -1);
         return "Subtracted " . $adjustAmount . " SR!";
+    }
+
+    public function setTankSkillRank(string $apiKey, int $newSkillRank) {
+        $oldSkillRank = $this->getSkillRank($apiKey, 1);
+        $this->adjustSkillRating(User::where('api_key', '=', $apiKey)->firstOrFail(), 1, $newSkillRank - $oldSkillRank);
+        return "Set Skill Rank to " . $newSkillRank;
     }
 
     public function addTankSkillRank(string $apiKey, int $adjustAmount) {
@@ -35,6 +56,12 @@ class ApiController extends Controller
         return "Added " . $adjustAmount . " SR!";
     }
 
+    public function setDamageSkillRank(string $apiKey, int $newSkillRank) {
+        $oldSkillRank = $this->getSkillRank($apiKey, 2);
+        $this->adjustSkillRating(User::where('api_key', '=', $apiKey)->firstOrFail(), 2, $newSkillRank - $oldSkillRank);
+        return "Set Skill Rank to " . $newSkillRank;
+    }
+
     public function addDamageSkillRank(string $apiKey, int $adjustAmount) {
         $user = User::where('api_key', '=', $apiKey)->firstOrFail();
         if (!is_int($adjustAmount)) die();
@@ -47,6 +74,12 @@ class ApiController extends Controller
         if (!is_int($adjustAmount)) die();
         $this->adjustSkillRating($user, 2, $adjustAmount * -1);
         return "Subtracted " . $adjustAmount . " SR!";
+    }
+
+    public function setSupportSkillRank(string $apiKey, int $newSkillRank) {
+        $oldSkillRank = $this->getSkillRank($apiKey, 3);
+        $this->adjustSkillRating(User::where('api_key', '=', $apiKey)->firstOrFail(), 3, $newSkillRank - $oldSkillRank);
+        return "Set Skill Rank to " . $newSkillRank;
     }
 
     public function addSupportSkillRank(string $apiKey, int $adjustAmount) {

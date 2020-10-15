@@ -18,13 +18,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('{apiKey}/set/{adjustAmount}', 'ApiController@setSkillRank');
 Route::get('{apiKey}/add/{adjustAmount}', 'ApiController@addSkillRank');
 Route::get('{apiKey}/subtract/{adjustAmount}', 'ApiController@subtractSkillRank');
 Route::get('{apiKey}/change/{role}', 'ApiController@changeShown');
+Route::get('{apiKey}/set/tank/{adjustAmount}', 'ApiController@setTankSkillRank');
 Route::get('{apiKey}/add/tank/{adjustAmount}', 'ApiController@addTankSkillRank');
 Route::get('{apiKey}/subtract/tank/{adjustAmount}', 'ApiController@subtractTankSkillRank');
+Route::get('{apiKey}/set/damage/{adjustAmount}', 'ApiController@setDamageSkillRank');
 Route::get('{apiKey}/add/damage/{adjustAmount}', 'ApiController@addDamageSkillRank');
 Route::get('{apiKey}/subtract/damage/{adjustAmount}', 'ApiController@subtractDamageSkillRank');
+Route::get('{apiKey}/set/support/{adjustAmount}', 'ApiController@setSupportSkillRank');
 Route::get('{apiKey}/add/support/{adjustAmount}', 'ApiController@addSupportSkillRank');
 Route::get('{apiKey}/subtract/support/{adjustAmount}', 'ApiController@subtractTankSkillRank');
 Route::get('{apiKey}/get/{role}', 'ApiController@getSkillRank')->name('api_get_role');
