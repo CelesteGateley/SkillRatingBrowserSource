@@ -145,24 +145,24 @@ class ApiController extends Controller
     }
 
     private function adjustSkillRating(User $user, int $role, int $adjustAmount) {
-        if ($role == 0) { $role = $user->shown_sr; }
+        $role = $role == 0 ? $user->shown : $role;
         $oldValue = 0;
         $newValue = 0;
         switch ($role) {
             case 1:
                 $oldValue = $user->tank_sr;
-                $newValue = $user->tank_sr -= $adjustAmount;
+                $newValue = $user->tank_sr += $adjustAmount;
                 break;
             case 2:
                 $oldValue = $user->damage_sr;
-                $newValue = $user->damage_sr -= $adjustAmount;
+                $newValue = $user->damage_sr += $adjustAmount;
                 break;
             case 3:
                 $oldValue = $user->support_sr;
-                $newValue = $user->support_sr -= $adjustAmount;
+                $newValue = $user->support_sr += $adjustAmount;
                 break;
         }
-        $change = $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => 3]);
+        $change = $user->rankChanges()->create(['from_sr' => $oldValue, 'to_sr' => $newValue, 'role' => $role]);
         $user->save();
         return $change;
     }
